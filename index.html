@@ -1,1400 +1,471 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Meta Information -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe Deluxe - Ultimate Premium Edition</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  <title>Tic Tac Toe Deluxe - Ad-Free Edition</title>
+
+  <!-- External Libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+
+  <!-- Internal Styles -->
   <style>
-    :root {
-      /* Original theme colors */
-      --theme1: #4CAF50;
-      --theme2: #ff5e62;
-      --theme3: #2196F3;
-      --theme4: #f9a602;
-      --theme5: #9C27B0;
-      
-      /* New premium theme colors */
-      --theme6: #2c3e50; /* Dark Blue */
-      --theme7: #6a4c93; /* Royal Purple */
-      --theme8: #1e847f; /* Teal */
-      --theme9: #d63447; /* Ruby Red */
-      --theme10: #3a6351; /* Forest Green */
-      --theme11: #5d4257; /* Plum */
-      --theme12: #1a1a2e; /* Midnight Blue */
-      
-      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-      --cell-bg: #f3f3f3;
-      --cell-shadow: 0 4px 12px 0 rgba(0,0,0,0.10);
-      --win-bg: #fffbe6;
-      --win-shadow: 0 0 24px 6px #ffe066;
-      --score-bg: #fff;
-      --score-shadow: 0 6px 24px 0 rgba(0,0,0,0.07);
-      --font-main: 'Montserrat', Arial, sans-serif;
-      --font-body: 'Roboto', Arial, sans-serif;
-      --main-color: var(--theme1);
-      --bg-color: #ffffff;
-      --text-color: #333333;
-      --header-color: #222222;
-      --border-color: #e0e0e0;
+    /*--------------------------------------------------*/
+    /*  1. ROOT VARIABLES & VIBRANT THEMES (15 Colors) */
+    /*--------------------------------------------------*/
+    :root { /* ... 15 Vibrant Theme Colors remain the same ... */
+        --theme1: #E63946; --theme1-rgb: 230, 57, 70; --theme2: #F4A261; --theme2-rgb: 244, 162, 97; --theme3: #2A9D8F; --theme3-rgb: 42, 157, 143; --theme4: #457B9D; --theme4-rgb: 69, 123, 157; --theme5: #1D3557; --theme5-rgb: 29, 53, 87; --theme6: #8338EC; --theme6-rgb: 131, 56, 236; --theme7: #FF006E; --theme7-rgb: 255, 0, 110; --theme8: #FB5607; --theme8-rgb: 251, 86, 7; --theme9: #FFBE0B; --theme9-rgb: 255, 190, 11; --theme10: #3A86FF; --theme10-rgb: 58, 134, 255; --theme11: #9B5DE5; --theme11-rgb: 155, 93, 229; --theme12: #F15BB5; --theme12-rgb: 241, 91, 181; --theme13: #00F5D4; --theme13-rgb: 0, 245, 212; --theme14: #FEE440; --theme14-rgb: 254, 228, 64; --theme15: #00BBF9; --theme15-rgb: 0, 187, 249;
+        /* --- UI Variables --- */
+        --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); --premium-shadow: 0 10px 35px rgba(0, 0, 0, 0.2); --premium-shadow-hover: 0 15px 45px rgba(0, 0, 0, 0.25); --premium-gradient: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%); --cell-bg: #f3f3f3; --cell-shadow: 0 4px 12px 0 rgba(0,0,0,0.10); --win-bg: #fffbe6; --win-shadow: 0 0 24px 6px #ffe066; --font-main: 'Poppins', 'Montserrat', Arial, sans-serif; --font-body: 'Roboto', Arial, sans-serif;
+        /* --- Dynamic Variables --- */
+        --main-color: var(--theme1); --main-color-rgb: var(--theme1-rgb); --bg-color: #ffffff; --text-color: #333333; --header-color: #222222; --border-color: #e0e0e0; --element-tint-opacity-light: 0.07; --element-tint-opacity-dark: 0.10;
     }
+    /*--------------------------------------------------*/
+    /*  2. BASE & DARK MODE STYLES                    */
+    /*--------------------------------------------------*/
+    body { background: var(--bg-color); min-height: 100vh; margin: 0; font-family: var(--font-body); transition: background 0.3s; }
+    body.dark-mode { --bg-color: #121212; --text-color: #e0e0e0; --header-color: #f0f0f0; --border-color: #333333; --cell-bg: #2a2a2a; background: var(--bg-color); }
+    /*--------------------------------------------------*/
+    /*  3. GAME CONTAINER & LAYOUT                    */
+    /*--------------------------------------------------*/
+    .game-container { max-width: 480px; margin: 36px auto; background: rgba(255,255,255,0.96); border-radius: 24px; box-shadow: var(--shadow); padding: 24px 12px 18px 12px; display: flex; flex-direction: column; align-items: center; transition: background-color 0.3s; }
+    body.dark-mode .game-container { background: rgba(30,30,30,0.95); color: var(--text-color); }
+    h1 { font-family: var(--font-main); font-size: 2.2rem; font-weight: 800; color: var(--main-color); margin-bottom: 16px; letter-spacing: 2px; text-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: color 0.3s; text-transform: uppercase; }
+    body.dark-mode h1 { text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    /*--------------------------------------------------*/
+    /*  4. CONTROLS & INPUTS                          */
+    /*--------------------------------------------------*/
+    .controls { width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .control-group { flex: 1 1 110px; min-width: 110px; display: flex; flex-direction: column; align-items: flex-start; background: var(--premium-gradient), rgba(255,255,255,0.85); border-radius: 12px; padding: 8px 10px 5px 10px; box-shadow: var(--premium-shadow); margin-bottom: 4px; transition: all 0.3s ease; border: 1.5px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); position: relative; overflow: hidden; }
+    .control-group:hover { box-shadow: var(--premium-shadow-hover); transform: translateY(-2px); }
+    body.dark-mode .control-group { background: var(--premium-gradient), rgba(40,40,40,0.85); border-color: rgba(100,100,100,0.2); }
+    .control-group label { font-weight: 600; font-size: 0.85rem; color: var(--main-color); margin-bottom: 2px; font-family: var(--font-main); transition: color 0.3s; text-transform: uppercase; letter-spacing: 0.5px; position: relative; z-index: 1; }
+    body.dark-mode .control-group label { color: #e0e0e0; }
+    select { width: 100%; padding: 6px 6px; border-radius: 8px; border: 1.5px solid var(--main-color); background: rgba(255,255,255,0.9); font-size: 0.9rem; font-family: var(--font-body); color: #333; outline: none; transition: all 0.3s; margin-bottom: 2px; cursor: pointer; position: relative; z-index: 1; }
+    body.dark-mode select { background: rgba(60,60,60,0.9); color: #e0e0e0; border-color: var(--main-color); }
+    select:focus { border: 1.5px solid var(--main-color); box-shadow: 0 0 0 2px rgba(var(--main-color-rgb), 0.25); }
+    .color-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; position: relative; z-index: 1; }
+    .color-option { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.11); cursor: pointer; transition: transform 0.2s, border 0.2s, outline 0.2s; outline: 2px solid transparent; }
+    body.dark-mode .color-option { border: 2px solid #333; }
+    .color-option.selected { outline: 2px solid var(--main-color); transform: scale(1.16); }
+    .emoji-selection { width: 100%; display: flex; justify-content: space-between; margin: 10px 0 2px 0; gap: 10px; }
+    .emoji-group { flex: 1 1 110px; min-width: 110px; background: var(--premium-gradient), rgba(255,255,255,0.85); border-radius: 12px; padding: 8px 10px 5px 10px; box-shadow: var(--premium-shadow); display: flex; flex-direction: column; align-items: flex-start; transition: all 0.3s ease; border: 1.5px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); position: relative; overflow: hidden; }
+    .emoji-group:hover { box-shadow: var(--premium-shadow-hover); transform: translateY(-2px); }
+    body.dark-mode .emoji-group { background: var(--premium-gradient), rgba(40,40,40,0.85); border-color: rgba(100,100,100,0.2); }
+    .emoji-group label { font-family: var(--font-main); color: var(--main-color); font-weight: 600; margin-bottom: 2px; transition: color 0.3s; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; position: relative; z-index: 1; }
+    body.dark-mode .emoji-group label { color: #e0e0e0; }
+    .emoji-select { font-size: 1.3rem; padding: 4px 8px; border-radius: 8px; border: 1.5px solid var(--main-color); background: rgba(255,255,255,0.9); outline: none; margin-bottom: 2px; transition: all 0.3s; cursor: pointer; position: relative; z-index: 1; }
+    body.dark-mode .emoji-select { background: rgba(60,60,60,0.9); color: #fff; }
 
-    body {
-      background: #f5f5f5;
-      min-height: 100vh;
-      margin: 0;
-      font-family: var(--font-body);
-      transition: background 0.5s;
-    }
+    /*--------------------------------------------------*/
+    /*  5. ACTION & UTILITY BUTTONS                   */
+    /*--------------------------------------------------*/
+    .action-buttons { display: flex; gap: 12px; margin: 15px 0; justify-content: center; }
+    .btn { background: linear-gradient(90deg, var(--main-color) 0%, var(--main-color) 80%, rgba(255,255,255,0.2) 100%); color: #fff; font-family: var(--font-main); font-size: 1rem; border: none; border-radius: 10px; padding: 9px 22px; box-shadow: 0 4px 15px 0 rgba(0,0,0,0.15); cursor: pointer; font-weight: 700; letter-spacing: 1px; transition: all 0.3s; text-transform: uppercase; }
+    body.dark-mode .btn { background: linear-gradient(90deg, var(--main-color) 0%, var(--main-color) 80%, rgba(60,60,60,0.2) 100%); }
+    .btn:hover { background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, var(--main-color) 100%); transform: translateY(-2px); box-shadow: 0 6px 20px 0 rgba(0,0,0,0.2); }
+    body.dark-mode .btn:hover { background: linear-gradient(90deg, rgba(60,60,60,0.1) 0%, var(--main-color) 100%); }
+    .utility-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+    .icon-btn { background: var(--main-color); color: white; border: none; border-radius: 50%; width: 38px; height: 38px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15); transition: all 0.3s; }
+    .icon-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px 0 rgba(0,0,0,0.2); }
+    .icon-btn i { font-size: 1.1rem; }
 
-    body.dark-mode {
-      --bg-color: #121212;
-      --text-color: #e0e0e0;
-      --header-color: #f0f0f0;
-      --border-color: #333333;
-      --cell-bg: #2a2a2a;
-      background: #121212;
-    }
-
-    .game-container {
-      max-width: 480px;
-      margin: 36px auto;
-      background: rgba(255,255,255,0.96);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 24px 12px 18px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: background-color 0.5s;
-    }
-
-    body.dark-mode .game-container {
-      background: rgba(30,30,30,0.95);
-      color: var(--text-color);
-    }
-
-    h1 {
-      font-family: var(--font-main);
-      font-size: 2.2rem;
-      color: var(--main-color);
-      margin-bottom: 16px;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 8px #e0e0e0;
-      transition: color 0.3s;
-    }
-
-    body.dark-mode h1 {
-      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    }
-
-    .controls {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .control-group {
-      flex: 1 1 120px;
-      min-width: 120px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      background: #f8f8fa;
-      border-radius: 12px;
-      padding: 8px 10px 5px 10px;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
-      margin-bottom: 4px;
-      transition: background-color 0.3s;
-    }
-
-    body.dark-mode .control-group {
-      background: #2a2a2a;
-    }
-
-    .control-group label {
-      font-weight: 500;
-      font-size: 1rem;
-      color: var(--main-color);
-      margin-bottom: 2px;
-      font-family: var(--font-main);
-      transition: color 0.3s;
-    }
-
-    body.dark-mode .control-group label {
-      color: #e0e0e0;
-    }
-
-    select {
-      width: 100%;
-      padding: 7px 6px;
-      border-radius: 8px;
-      border: 1.5px solid var(--main-color);
-      background: #fff;
-      font-size: 1rem;
-      font-family: var(--font-body);
-      color: #333;
-      outline: none;
-      transition: border 0.3s, background-color 0.3s, color 0.3s;
-      margin-bottom: 2px;
-    }
-
-    body.dark-mode select {
-      background: #333;
-      color: #e0e0e0;
-      border-color: var(--main-color);
-    }
-
-    select:focus {
-      border: 2px solid var(--main-color);
-    }
-
-    .color-picker {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 2px;
-    }
-
-    .color-option {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: 2.5px solid #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.11);
-      cursor: pointer;
-      transition: transform 0.2s, border 0.2s;
-      outline: 2px solid transparent;
-    }
-
-    body.dark-mode .color-option {
-      border: 2.5px solid #333;
-    }
-
-    .color-option.selected {
-      outline: 2.5px solid var(--main-color);
-      transform: scale(1.16);
-    }
-
-    .emoji-selection {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0 2px 0;
-      gap: 12px;
-    }
-
-    .emoji-group {
-      flex: 1 1 120px;
-      min-width: 120px;
-      background: #f8f8fa;
-      border-radius: 12px;
-      padding: 8px 10px 5px 10px;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      transition: background-color 0.3s;
-    }
-
-    body.dark-mode .emoji-group {
-      background: #2a2a2a;
-    }
-
-    .emoji-group label {
-      font-family: var(--font-main);
-      color: var(--main-color);
-      font-weight: 500;
-      margin-bottom: 2px;
-      transition: color 0.3s;
-    }
-
-    body.dark-mode .emoji-group label {
-      color: #e0e0e0;
-    }
-
-    .emoji-select {
-      font-size: 1.5rem;
-      padding: 5px 8px;
-      border-radius: 8px;
-      border: 1.5px solid var(--main-color);
-      background: #fff;
-      outline: none;
-      margin-bottom: 2px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.dark-mode .emoji-select {
-      background: #333;
-      color: #fff;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      margin: 15px 0;
-    }
-
-    .btn {
-      background: linear-gradient(90deg, var(--main-color) 60%, #fff 100%);
-      color: #fff;
-      font-family: var(--font-main);
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 24px;
-      box-shadow: 0 2px 10px 0 rgba(0,0,0,0.08);
-      cursor: pointer;
-      font-weight: 700;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-    }
-
-    body.dark-mode .btn {
-      background: linear-gradient(90deg, var(--main-color) 60%, #333 100%);
-    }
-
-    .btn:hover {
-      background: linear-gradient(90deg, #fff 0%, var(--main-color) 100%);
-      color: var(--main-color);
-      transform: translateY(-2px);
-    }
-
-    body.dark-mode .btn:hover {
-      background: linear-gradient(90deg, #333 0%, var(--main-color) 100%);
-    }
-
-    .board {
-      display: grid;
-      gap: 12px;
-      background: transparent;
-      border-radius: 18px;
-      margin-bottom: 18px;
-      transition: box-shadow 0.3s;
-    }
-
+    /*--------------------------------------------------*/
+    /*  6. GAME BOARD & CELLS                         */
+    /*--------------------------------------------------*/
+    .board { display: grid; gap: 12px; background: transparent; border-radius: 18px; margin-bottom: 18px; transition: box-shadow 0.3s; }
     .board-3 { grid-template-columns: repeat(3, 90px); grid-template-rows: repeat(3, 90px);}
     .board-4 { grid-template-columns: repeat(4, 70px); grid-template-rows: repeat(4, 70px);}
     .board-5 { grid-template-columns: repeat(5, 58px); grid-template-rows: repeat(5, 58px);}
+    .cell { box-shadow: var(--cell-shadow); border-radius: 16px; display: flex; justify-content: center; align-items: center; font-family: var(--font-main); cursor: pointer; transition: all 0.2s ease-out; user-select: none; color: var(--main-color); border: 2.5px solid var(--border-color); overflow: hidden; position: relative; background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(255,255,255,0.5)); }
+    body.dark-mode .cell { background: linear-gradient(145deg, var(--cell-bg), #333); border-color: #444; }
+    .cell:hover { background: linear-gradient(145deg, #e0e0e0, #fff); box-shadow: 0 6px 18px 0 rgba(0,0,0,0.13); transform: translateY(-2px); }
+    body.dark-mode .cell:hover { background: linear-gradient(145deg, #333, #444); }
+    .cell:active { box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10) inset; transform: translateY(0); }
+    .cell.winner { background: var(--win-bg); box-shadow: var(--win-shadow); border-color: var(--main-color); animation: pulse 1.1s infinite; }
+    /* Emoji Styling */
+    .emoji-appear { font-weight: 700; animation: emojiPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+    .board-3 .cell .emoji-appear { font-size: 2.8rem; }
+    .board-4 .cell .emoji-appear { font-size: 2.2rem; }
+    .board-5 .cell .emoji-appear { font-size: 1.8rem; }
+    @keyframes emojiPop { 0% { transform: scale(0.2); opacity: 0.5; } 70% { transform: scale(1.2); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes pulse { 0% { box-shadow: var(--win-shadow);} 50% { box-shadow: 0 0 40px 14px #ffe066;} 100% { box-shadow: var(--win-shadow);} }
 
-    .cell {
-      background: linear-gradient(145deg, var(--cell-bg), #fff);
-      box-shadow: var(--cell-shadow);
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: var(--font-main);
-      cursor: pointer;
-      transition: all 0.3s ease-out;
-      user-select: none;
-      color: var(--main-color);
-      border: 2.5px solid var(--border-color);
-      overflow: hidden;
-      position: relative;
-    }
+    /*--------------------------------------------------*/
+    /*  7. GAME STATS                                 */
+    /*--------------------------------------------------*/
+    #gameStats { background: var(--premium-gradient), rgba(255,255,255,0.9); box-shadow: var(--premium-shadow); border-radius: 18px; padding: 12px 10px 10px 10px; width: 100%; max-width: 300px; margin: 18px auto 6px auto; /* Added top margin */ display: flex; justify-content: space-between; align-items: center; font-family: var(--font-main); font-size: 1rem; color: #444; letter-spacing: 1px; border: 2px solid var(--main-color); transition: all 0.3s; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); position: relative; overflow: hidden; }
+    #gameStats:hover { box-shadow: var(--premium-shadow-hover); transform: translateY(-2px); }
+    body.dark-mode #gameStats { background: var(--premium-gradient), rgba(40,40,40,0.9); color: #e0e0e0; }
+    .stat { display: flex; flex-direction: column; align-items: center; min-width: 75px; gap: 2px; position: relative; z-index: 1; }
+    .stat .label { font-size: 0.8rem; font-family: var(--font-main); color: #888; margin-top: 2px; transition: color 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
+    body.dark-mode .stat .label { color: #aaa; }
+    .stat .value { font-size: 1.3rem; font-weight: 700; color: var(--main-color); transition: color 0.3s; }
 
-    /* FIX: Adjusting cell background to use theme color */
-    .cell {
-      background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(255,255,255,0.5));
-      position: relative;
-    }
-    
-    .cell::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--main-color);
-      opacity: 0.08;
-      border-radius: 13px;
-      z-index: -1;
-    }
+    /*--------------------------------------------------*/
+    /*  8. SUBTLE THEME TINT                          */
+    /*--------------------------------------------------*/
+    .cell::before, .control-group::before, .emoji-group::before, #gameStats::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--main-color); opacity: var(--element-tint-opacity-light); z-index: 0; border-radius: inherit; transition: opacity 0.5s, background-color 0.3s; pointer-events: none; }
+    .cell::before { border-radius: 13px; }
+    .control-group::before, .emoji-group::before { border-radius: 10px; }
+    #gameStats::before { border-radius: 16px; }
+    body.dark-mode .cell::before, body.dark-mode .control-group::before, body.dark-mode .emoji-group::before, body.dark-mode #gameStats::before { opacity: var(--element-tint-opacity-dark); }
+    .control-group > *, .emoji-group > *, .stat { position: relative; z-index: 1; }
 
-    body.dark-mode .cell {
-      background: linear-gradient(145deg, var(--cell-bg), #333);
-      border-color: #444;
-    }
+    /*--------------------------------------------------*/
+    /*  9. MODALS                                     */
+    /*--------------------------------------------------*/
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+    .modal.active { opacity: 1; visibility: visible; }
+    .modal-content { background: white; border-radius: 16px; padding: 24px; width: 90%; max-width: 420px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; transform: scale(0.9); transition: transform 0.3s; }
+    body.dark-mode .modal-content { background: #212121; color: white; }
+    .modal.active .modal-content { transform: scale(1); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-family: var(--font-main); font-size: 1.4rem; color: var(--main-color); font-weight: 700; }
+    .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #777; transition: color 0.3s; }
+    body.dark-mode .close-modal { color: #aaa; }
+    .close-modal:hover { color: var(--main-color); }
+    .modal-body { font-family: var(--font-body); line-height: 1.5; max-height: 70vh; overflow-y: auto; }
+    .modal-body h3 { color: var(--main-color); margin-top: 16px; margin-bottom: 8px; font-weight: 600; }
+    .modal-body ol { padding-left: 20px; } .modal-body li { margin-bottom: 8px; }
+    .modal-body ul { list-style: disc; padding-left: 20px; }
 
-    .cell:hover {
-      background: linear-gradient(145deg, #e0e0e0, #fff);
-      box-shadow: 0 6px 18px 0 rgba(0,0,0,0.13);
-      transform: translateY(-2px);
-    }
+    /*--------------------------------------------------*/
+    /*  10. CELEBRATION EFFECTS & POPUP               */
+    /*--------------------------------------------------*/
+    @keyframes confetti-fall { 0%{transform:translateY(-10vh) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(360deg);opacity:0} }
+    @keyframes sparkle { 0%{transform:scale(0);opacity:0} 50%{transform:scale(1.2);opacity:1} 100%{transform:scale(0);opacity:0} }
+    .confetti { position: fixed; width: 10px; height: 10px; background-color: var(--main-color); animation: confetti-fall 3.5s linear forwards; z-index: 1000; pointer-events: none; }
+    .sparkle { position: fixed; width: 8px; height: 8px; border-radius: 50%; background-color: var(--main-color); box-shadow: 0 0 10px 2px var(--main-color); animation: sparkle 1.5s linear infinite; z-index: 1001; pointer-events: none; }
+    .firework { position: fixed; z-index: 1002; pointer-events: none; }
+    .firework-particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; background-color: var(--main-color); box-shadow: 0 0 5px 1px var(--main-color); opacity: 1; transform-origin: center; animation: firework-expand 1s ease-out forwards; }
+    @keyframes firework-expand { 0%{transform:translate(0,0) scale(1);opacity:1} 100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0} }
+    .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 32px 40px 24px 40px; border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.20); z-index: 999; text-align: center; font-family: var(--font-main); color: var(--main-color); font-size: 1.5rem; letter-spacing: 1px; animation: popup-in 0.6s cubic-bezier(.68,-.55,.27,1.55); }
+    body.dark-mode .popup { background: #212121; color: var(--main-color); }
+    @keyframes popup-in { 0%{transform:translate(-50%,-60%) scale(.7)} 100%{transform:translate(-50%,-50%) scale(1)} }
+    .popup .celebrate { font-size: 2.5rem; margin-bottom: 6px; display: block; }
 
-    body.dark-mode .cell:hover {
-      background: linear-gradient(145deg, #333, #444);
-    }
+    /*--------------------------------------------------*/
+    /*  11. RESPONSIVE DESIGN                         */
+    /*--------------------------------------------------*/
+    /* Responsive styles remain the same as previous version */
+    @media (min-width: 1200px) { .ad-sticky { display: flex; } }
+    @media (max-width: 600px) { .game-container { max-width: 98vw; padding: 15px 2vw 10px 2vw;} .board-3 { grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px);} .board-4 { grid-template-columns: repeat(4, 50px); grid-template-rows: repeat(4, 50px);} .board-5 { grid-template-columns: repeat(5, 40px); grid-template-rows: repeat(5, 40px);} .board-3 .cell .emoji-appear { font-size: 2.2rem; } .board-4 .cell .emoji-appear { font-size: 1.7rem; } .board-5 .cell .emoji-appear { font-size: 1.4rem; } .cell { border-radius: 12px;} #gameStats { font-size: 0.9rem;} .stat .value { font-size: 1.1rem;} .action-buttons { flex-wrap: wrap; } .btn { font-size: 0.9rem; padding: 8px 16px; } .ad-top { min-height: 50px; } .control-group, .emoji-group { min-width: 100px; padding: 6px 8px 4px 8px; } h1 { font-size: 1.8rem; } }
+    @media (max-width: 400px) { .game-container { padding: 10px 1vw 8px 1vw;} h1 { font-size: 1.6rem; } .board-3 { grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px);} .board-4 { grid-template-columns: repeat(4, 42px); grid-template-rows: repeat(4, 42px);} .board-5 { grid-template-columns: repeat(5, 34px); grid-template-rows: repeat(5, 34px);} .board-3 .cell .emoji-appear { font-size: 2rem; } .board-4 .cell .emoji-appear { font-size: 1.5rem; } .board-5 .cell .emoji-appear { font-size: 1.2rem; } .control-group, .emoji-group { min-width: 90px; flex: 1 1 90px; } .control-group label, .emoji-group label { font-size: 0.75rem; } select { font-size: 0.85rem; } .emoji-select { font-size: 1.2rem; } .utility-buttons { gap: 10px; } .icon-btn { width: 35px; height: 35px; } .icon-btn i { font-size: 1rem; } }
 
-    .cell:active {
-      box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10) inset;
-      transform: translateY(0);
-    }
-
-    .cell.winner {
-      background: var(--win-bg);
-      box-shadow: var(--win-shadow);
-      border: 2.5px solid var(--main-color);
-      animation: pulse 1.1s infinite;
-    }
-
-    /* FIX: Proper emoji sizing for different grid sizes */
-    .board-3 .cell .emoji-appear {
-      font-size: 2.8rem;
-    }
-    
-    .board-4 .cell .emoji-appear {
-      font-size: 2.2rem;
-    }
-    
-    .board-5 .cell .emoji-appear {
-      font-size: 1.8rem;
-    }
-
-    /* New animation for when emojis appear */
-    .emoji-appear {
-      animation: emojiPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    @keyframes emojiPop {
-      0% { transform: scale(0.2); opacity: 0.5; }
-      70% { transform: scale(1.2); opacity: 0.9; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: var(--win-shadow);}
-      50% { box-shadow: 0 0 40px 14px #ffe066;}
-      100% { box-shadow: var(--win-shadow);}
-    }
-
-    #gameStats {
-      background: var(--score-bg);
-      box-shadow: var(--score-shadow);
-      border-radius: 18px;
-      padding: 16px 10px 12px 10px;
-      width: 100%;
-      max-width: 320px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: var(--font-main);
-      font-size: 1.1rem;
-      color: #444;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-      border: 2.5px solid var(--main-color);
-      transition: all 0.3s;
-    }
-
-    body.dark-mode #gameStats {
-      background: #2a2a2a;
-      color: #e0e0e0;
-    }
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 80px;
-      gap: 2px;
-    }
-
-    .stat .label {
-      font-size: 0.95rem;
-      font-family: var(--font-body);
-      color: #888;
-      margin-top: 2px;
-      transition: color 0.3s;
-    }
-
-    body.dark-mode .stat .label {
-      color: #aaa;
-    }
-
-    .stat .value {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--main-color);
-      transition: color 0.3s;
-    }
-
-    .utility-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 15px;
-    }
-
-    .icon-btn {
-      background: var(--main-color);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 2px 10px 0 rgba(0,0,0,0.1);
-      transition: all 0.3s;
-    }
-
-    .icon-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 14px 0 rgba(0,0,0,0.15);
-    }
-
-    .icon-btn i {
-      font-size: 1.2rem;
-    }
-
-    /* Modal Styles */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
-    }
-
-    .modal.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      position: relative;
-      transform: scale(0.9);
-      transition: transform 0.3s;
-    }
-
-    body.dark-mode .modal-content {
-      background: #212121;
-      color: white;
-    }
-
-    .modal.active .modal-content {
-      transform: scale(1);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .modal-title {
-      font-family: var(--font-main);
-      font-size: 1.4rem;
-      color: var(--main-color);
-    }
-
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #777;
-      transition: color 0.3s;
-    }
-
-    body.dark-mode .close-modal {
-      color: #aaa;
-    }
-
-    .close-modal:hover {
-      color: var(--main-color);
-    }
-
-    .modal-body {
-      font-family: var(--font-body);
-      line-height: 1.5;
-    }
-
-    .modal-body h3 {
-      color: var(--main-color);
-      margin-top: 16px;
-      margin-bottom: 8px;
-    }
-
-    .modal-body ol {
-      padding-left: 20px;
-    }
-
-    .modal-body li {
-      margin-bottom: 8px;
-    }
-
-    /* Enhanced Celebration Effects */
-    @keyframes confetti-fall {
-      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-    }
-
-    @keyframes sparkle {
-      0% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(0); opacity: 0; }
-    }
-
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      background-color: var(--main-color);
-      animation: confetti-fall 3.5s linear forwards;
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    .sparkle {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: var(--main-color);
-      box-shadow: 0 0 10px 2px var(--main-color);
-      animation: sparkle 1.5s linear infinite;
-      z-index: 101;
-      pointer-events: none;
-    }
-
-    .firework {
-      position: fixed;
-      z-index: 102;
-      pointer-events: none;
-    }
-
-    .firework-particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--main-color);
-      box-shadow: 0 0 5px 1px var(--main-color);
-      opacity: 1;
-      transform-origin: center;
-      animation: firework-expand 1s ease-out forwards;
-    }
-
-    @keyframes firework-expand {
-      0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-    }
-
-    /* Winner popup */
-    .popup {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      padding: 32px 40px 24px 40px;
-      border-radius: 18px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.20);
-      z-index: 999;
-      text-align: center;
-      font-family: var(--font-main);
-      color: var(--main-color);
-      font-size: 1.5rem;
-      letter-spacing: 1px;
-      animation: popup-in 0.6s cubic-bezier(.68,-0.55,.27,1.55);
-    }
-
-    body.dark-mode .popup {
-      background: #212121;
-      color: var(--main-color);
-    }
-
-    @keyframes popup-in {
-      0% { transform: translate(-50%, -60%) scale(0.7);}
-      100% { transform: translate(-50%, -50%) scale(1);}
-    }
-
-    .popup .celebrate {
-      font-size: 2.5rem;
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    @media (max-width: 600px) {
-      .game-container { max-width: 98vw; padding: 8px 2vw 8px 2vw;}
-      .board-3 { grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px);}
-      .board-4 { grid-template-columns: repeat(4, 50px); grid-template-rows: repeat(4, 50px);}
-      .board-5 { grid-template-columns: repeat(5, 40px); grid-template-rows: repeat(5, 40px);}
-      
-      /* FIX: Adjusting emoji sizes for smaller screens */
-      .board-3 .cell .emoji-appear { font-size: 2.2rem; }
-      .board-4 .cell .emoji-appear { font-size: 1.7rem; }
-      .board-5 .cell .emoji-appear { font-size: 1.4rem; }
-      
-      .cell { border-radius: 12px;}
-      #gameStats { font-size: 1rem;}
-      .stat .value { font-size: 1.1rem;}
-      .action-buttons { flex-wrap: wrap; justify-content: center; }
-      .btn { font-size: 1rem; padding: 8px 16px; }
-    }
-
-    @media (max-width: 400px) {
-      .board-3 { grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px);}
-      .board-4 { grid-template-columns: repeat(4, 42px); grid-template-rows: repeat(4, 42px);}
-      .board-5 { grid-template-columns: repeat(5, 34px); grid-template-rows: repeat(5, 34px);}
-      
-      /* FIX: Adjusting emoji sizes for even smaller screens */
-      .board-3 .cell .emoji-appear { font-size: 2rem; }
-      .board-4 .cell .emoji-appear { font-size: 1.5rem; }
-      .board-5 .cell .emoji-appear { font-size: 1.2rem; }
-    }
   </style>
 </head>
 <body>
+  <!-- NOTE: All Ad container divs have been removed -->
+
+  <!-- Main Game Container -->
   <div class="game-container">
     <h1>Tic Tac Toe Deluxe</h1>
+
+    <!-- Game Controls Section -->
     <div class="controls">
+      <!-- Grid Size Selector -->
       <div class="control-group">
-        <label for="gridSize">Grid Size</label>
+        <label for="gridSize">Grid</label>
         <select id="gridSize">
           <option value="3" selected>3 × 3</option>
           <option value="4">4 × 4</option>
-          <option value="5">5 × 5</option>
+          <option value="5">5 × 5</option> <!-- Feature lock removed -->
         </select>
       </div>
+      <!-- Difficulty Selector -->
       <div class="control-group">
-        <label for="difficulty">Difficulty</label>
+        <label for="difficulty">AI Level</label>
         <select id="difficulty">
           <option value="easy" selected>Easy</option>
           <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
+          <option value="hard">Hard</option> <!-- Feature lock removed -->
         </select>
       </div>
+      <!-- Game Mode Selector -->
       <div class="control-group">
-        <label for="gameMode">Game Mode</label>
+        <label for="gameMode">Mode</label>
         <select id="gameMode">
-          <option value="PvP" selected>Player vs Player</option>
-          <option value="PvC">Player vs Computer</option>
+          <option value="PvP" selected>vs Player</option>
+          <option value="PvC">vs CPU</option>
         </select>
       </div>
+      <!-- Theme Color Picker -->
       <div class="control-group">
         <label>Theme</label>
         <div class="color-picker">
-          <div class="color-option selected" style="background: var(--theme1);" data-color="var(--theme1)"></div>
-          <div class="color-option" style="background: var(--theme2);" data-color="var(--theme2)"></div>
-          <div class="color-option" style="background: var(--theme3);" data-color="var(--theme3)"></div>
-          <div class="color-option" style="background: var(--theme4);" data-color="var(--theme4)"></div>
-          <div class="color-option" style="background: var(--theme5);" data-color="var(--theme5)"></div>
-          <div class="color-option" style="background: var(--theme6);" data-color="var(--theme6)"></div>
-          <div class="color-option" style="background: var(--theme7);" data-color="var(--theme7)"></div>
-          <div class="color-option" style="background: var(--theme8);" data-color="var(--theme8)"></div>
-          <div class="color-option" style="background: var(--theme9);" data-color="var(--theme9)"></div>
-          <div class="color-option" style="background: var(--theme10);" data-color="var(--theme10)"></div>
-          <div class="color-option" style="background: var(--theme11);" data-color="var(--theme11)"></div>
-          <div class="color-option" style="background: var(--theme12);" data-color="var(--theme12)"></div>
+          <!-- Final 15 Vibrant Color Options -->
+          <div class="color-option selected" style="background: var(--theme1);" data-color="var(--theme1)" data-rgb="var(--theme1-rgb)"></div>
+          <div class="color-option" style="background: var(--theme2);" data-color="var(--theme2)" data-rgb="var(--theme2-rgb)"></div>
+          <div class="color-option" style="background: var(--theme3);" data-color="var(--theme3)" data-rgb="var(--theme3-rgb)"></div>
+          <div class="color-option" style="background: var(--theme4);" data-color="var(--theme4)" data-rgb="var(--theme4-rgb)"></div>
+          <div class="color-option" style="background: var(--theme5);" data-color="var(--theme5)" data-rgb="var(--theme5-rgb)"></div>
+          <div class="color-option" style="background: var(--theme6);" data-color="var(--theme6)" data-rgb="var(--theme6-rgb)"></div>
+          <div class="color-option" style="background: var(--theme7);" data-color="var(--theme7)" data-rgb="var(--theme7-rgb)"></div>
+          <div class="color-option" style="background: var(--theme8);" data-color="var(--theme8)" data-rgb="var(--theme8-rgb)"></div>
+          <div class="color-option" style="background: var(--theme9);" data-color="var(--theme9)" data-rgb="var(--theme9-rgb)"></div>
+          <div class="color-option" style="background: var(--theme10);" data-color="var(--theme10)" data-rgb="var(--theme10-rgb)"></div>
+          <div class="color-option" style="background: var(--theme11);" data-color="var(--theme11)" data-rgb="var(--theme11-rgb)"></div>
+          <div class="color-option" style="background: var(--theme12);" data-color="var(--theme12)" data-rgb="var(--theme12-rgb)"></div>
+          <div class="color-option" style="background: var(--theme13);" data-color="var(--theme13)" data-rgb="var(--theme13-rgb)"></div>
+          <div class="color-option" style="background: var(--theme14);" data-color="var(--theme14)" data-rgb="var(--theme14-rgb)"></div>
+          <div class="color-option" style="background: var(--theme15);" data-color="var(--theme15)" data-rgb="var(--theme15-rgb)"></div>
         </div>
       </div>
     </div>
+
+    <!-- Emoji Selection Section -->
     <div class="emoji-selection">
+      <!-- Player 1 Emoji Selector -->
       <div class="emoji-group">
         <label for="player1Emoji">Player 1</label>
         <select id="player1Emoji" class="emoji-select">
-          <option>🐯</option>
-          <option>🦄</option>
-          <option>🦊</option>
-          <option>🧙‍♂️</option>
-          <option>🐉</option>
-          <option>🦁</option>
-          <option>😎</option>
-          <option>🧑‍🚀</option>
-          <option>🥷</option>
-          <option>👑</option>
-          <option>🦸‍♂️</option>
-          <option>🧠</option>
+          <!-- Final Curated Emojis (15 total) -->
+          <option>X</option><option>👑</option><option>🦁</option><option>🐉</option><option>🦅</option><option>☀️</option><option>🔥</option><option>💎</option><option>⚔️</option><option>🧙</option><option>🐺</option><option>🎯</option><option>⚡</option><option>🚀</option><option>⭐</option>
         </select>
       </div>
+      <!-- Player 2 Emoji Selector -->
       <div class="emoji-group">
         <label for="player2Emoji">Player 2</label>
         <select id="player2Emoji" class="emoji-select">
-          <option>🐼</option>
-          <option>👾</option>
-          <option>🤖</option>
-          <option>🦕</option>
-          <option>🦸‍♀️</option>
-          <option>🐧</option>
-          <option>😈</option>
-          <option>🧛‍♂️</option>
-          <option>🦹‍♀️</option>
-          <option>🌟</option>
-          <option>🦝</option>
-          <option>🎮</option>
+          <!-- Final Curated Emojis (15 total) -->
+          <option>O</option><option>👸</option><option>🐼</option><option>🐙</option><option>🦉</option><option>🌙</option><option>💧</option><option>✨</option><option>🛡️</option><option>🧚</option><option>🦄</option><option>🧩</option><option>🌀</option><option>💣</option><option>🎭</option>
         </select>
       </div>
     </div>
+
+    <!-- Action Buttons -->
     <div class="action-buttons">
       <button id="newGameBtn" class="btn">New Game</button>
       <button id="restartBtn" class="btn">Restart</button>
     </div>
+
+    <!-- Game Board -->
     <div id="board" class="board board-3"></div>
+
+    <!-- NOTE: Premium Feature Ad Blocks are REMOVED -->
+
+    <!-- NOTE: Middle Ad container is REMOVED -->
+
+    <!-- Game Stats -->
     <div id="gameStats">
-      <div class="stat">
-        <span class="value" id="player1Wins">0</span>
-        <span class="label" id="p1Label">🐯 Player 1</span>
-      </div>
-      <div class="stat">
-        <span class="value" id="draws">0</span>
-        <span class="label">Draws</span>
-      </div>
-      <div class="stat">
-        <span class="value" id="player2Wins">0</span>
-        <span class="label" id="p2Label">🐼 Player 2</span>
-      </div>
+      <div class="stat"><span class="value" id="player1Wins">0</span><span class="label" id="p1Label">X P1</span></div>
+      <div class="stat"><span class="value" id="draws">0</span><span class="label">Draws</span></div>
+      <div class="stat"><span class="value" id="player2Wins">0</span><span class="label" id="p2Label">O P2</span></div>
     </div>
+
+    <!-- Utility Buttons -->
     <div class="utility-buttons">
-      <button id="howToPlayBtn" class="icon-btn"><i class="ri-question-line"></i></button>
-      <button id="shareBtn" class="icon-btn"><i class="ri-share-line"></i></button>
-      <button id="darkModeBtn" class="icon-btn"><i class="ri-moon-line"></i></button>
+      <button id="howToPlayBtn" class="icon-btn" title="How to Play"><i class="ri-question-line"></i></button>
+      <button id="shareBtn" class="icon-btn" title="Share Game"><i class="ri-share-line"></i></button>
+      <button id="darkModeBtn" class="icon-btn" title="Toggle Dark Mode"><i class="ri-moon-line"></i></button>
+      <button id="soundToggleBtn" class="icon-btn" title="Toggle Sound"><i class="ri-volume-up-line"></i></button>
     </div>
-  </div>
+
+  </div> <!-- End Game Container -->
+
+  <!-- NOTE: Sticky Ad container is REMOVED -->
 
   <!-- How to Play Modal -->
   <div id="howToPlayModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title">How to Play</div>
-        <button class="close-modal">&times;</button>
+        <button class="close-modal">×</button>
       </div>
       <div class="modal-body">
-        <h3>Game Setup</h3>
+         <h3>Game Setup</h3>
         <ol>
-          <li>Choose your grid size: 3×3, 4×4, or 5×5</li>
-          <li>Select difficulty level (for computer opponent)</li>
-          <li>Pick game mode: Player vs Player or Player vs Computer</li>
-          <li>Choose your favorite theme color</li>
-          <li>Select emoji characters for both players</li>
+          <li>Choose grid size: 3×3, 4×4, or 5×5.</li>
+          <li>Select AI difficulty (Easy, Medium, or Hard) for PvC mode.</li>
+          <li>Pick game mode: Player vs Player (PvP) or Player vs Computer (PvC).</li>
+          <li>Choose your favorite theme color.</li>
+          <li>Select unique emojis (Defaults: X/O).</li>
         </ol>
-        
         <h3>Gameplay</h3>
         <ol>
-          <li>Players take turns placing their emoji on the grid</li>
-          <li>On a 3×3 grid, get 3 in a row to win</li>
-          <li>On a 4×4 grid, get 4 in a row to win</li>
-          <li>On a 5×5 grid, get 5 in a row to win</li>
-          <li>Rows can be horizontal, vertical, or diagonal</li>
+          <li>Players take turns placing their emoji on an empty cell.</li>
+          <li>Get N identical emojis in a row (N=grid size) to win.</li>
+          <li>Winning line can be horizontal, vertical, or diagonal.</li>
+          <li>Line must contain *only* the winner's emoji.</li>
+          <li>If board is full with no winner, it's a draw.</li>
         </ol>
-        
         <h3>Buttons</h3>
         <ul>
-          <li><b>New Game:</b> Reset scores and start fresh</li>
-          <li><b>Restart:</b> Start a new round but keep scores</li>
-          <li><b>Share:</b> Share this game with friends</li>
-          <li><b>Dark Mode:</b> Toggle between light and dark themes</li>
+          <li><b>New Game:</b> Reset scores & start fresh.</li>
+          <li><b>Restart:</b> New round, keep scores.</li>
+          <li><i class="ri-share-line"></i>: Share game link.</li>
+          <li><i class="ri-moon-line"></i>/<i class="ri-sun-line"></i>: Toggle theme.</li>
+          <li><i class="ri-volume-up-line"></i>/<i class="ri-volume-mute-line"></i>: Toggle sound.</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Sound Effects (already included but hidden) -->
-  <audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9c6b84.mp3"></audio>
-  <audio id="winSound" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12c3a1b1b0.mp3"></audio>
-  <audio id="drawSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_123b3c0d7b.mp3"></audio>
+  <!-- NOTE: Premium Unlock Modal is REMOVED -->
+  <!-- NOTE: Interstitial Ad Modal is REMOVED -->
 
+  <!-- Sound Effects -->
+  <audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9c6b84.mp3" preload="auto"></audio>
+  <audio id="winSound" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12c3a1b1b0.mp3" preload="auto"></audio>
+  <audio id="drawSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_123b3c0d7b.mp3" preload="auto"></audio>
+
+  <!-- JavaScript -->
   <script>
-    // Game variables
-    let currentPlayer = 1;
-    let gameBoard = [];
-    let gameActive = true;
-    let gridSize = 3;
-    let winningLength = 3;
-    let difficulty = 'easy';
-    let gameMode = 'PvP';
-    let stats = { player1Wins: 0, player2Wins: 0, draws: 0 };
-    let lastWinner = 0;
-    let isDarkMode = false;
+    /* ================================================== */
+    /*          JAVASCRIPT - TABLE OF CONTENTS          */
+    /* ================================================== */
+    /*   1. Global Variables & State                    */
+    /*   2. DOM Element Caching                         */
+    /*   3. Initialization                              */
+    /*   4. Event Listeners Setup & Handlers            */
+    /*   5. Core Game Logic (Reset, Move, Win/Draw)   */
+    /*   6. AI Logic (Strategies by Difficulty)         */
+    /*   7. UI Updates (Board, Labels, Theme, Popups) */
+    /*   8. Sound Control                               */
+    /*   9. Utilities & Effects (Share, Celebration)    */
+    /* ================================================== */
 
-    // DOM Elements
-    const boardElement = document.getElementById('board');
-    const gridSizeSelect = document.getElementById('gridSize');
-    const difficultySelect = document.getElementById('difficulty');
-    const gameModeSelect = document.getElementById('gameMode');
-    const player1EmojiSelect = document.getElementById('player1Emoji');
-    const player2EmojiSelect = document.getElementById('player2Emoji');
-    const newGameBtn = document.getElementById('newGameBtn');
-    const restartBtn = document.getElementById('restartBtn');
-    const player1WinsElement = document.getElementById('player1Wins');
-    const player2WinsElement = document.getElementById('player2Wins');
-    const drawsElement = document.getElementById('draws');
-    const colorOptions = document.querySelectorAll('.color-option');
-    const p1Label = document.getElementById('p1Label');
-    const p2Label = document.getElementById('p2Label');
-    const howToPlayBtn = document.getElementById('howToPlayBtn');
-    const howToPlayModal = document.getElementById('howToPlayModal');
-    const closeModalBtn = document.querySelector('.close-modal');
-    const shareBtn = document.getElementById('shareBtn');
-    const darkModeBtn = document.getElementById('darkModeBtn');
+    /* -------------------------------------------------- */
+    /*          1. Global Variables & State             */
+    /* -------------------------------------------------- */
+    // --- Game State ---
+    let currentPlayer = 1, gameBoard = [], gameBoardEmojis = [], gameActive = true;
+    let gridSize = 3, winningLength = 3;
+    // --- Settings ---
+    let difficulty = 'easy', gameMode = 'PvP', isDarkMode = false, isMuted = false, audioContextUnlocked = false;
+    // --- Scoring & Flow ---
+    let stats = { player1Wins: 0, player2Wins: 0, draws: 0 }, lastWinner = 0;
+    // NOTE: Premium feature variables removed
 
-    // Sounds
-    const clickSound = document.getElementById('clickSound');
-    const winSound = document.getElementById('winSound');
-    const drawSound = document.getElementById('drawSound');
+    /* -------------------------------------------------- */
+    /*             2. DOM Element Caching               */
+    /* -------------------------------------------------- */
+    const $ = (id) => document.getElementById(id);
+    const $$ = (selector) => document.querySelectorAll(selector);
 
-    // Init
-    initializeGame();
+    const boardElement = $('board'), gridSizeSelect = $('gridSize'), difficultySelect = $('difficulty'), gameModeSelect = $('gameMode'), player1EmojiSelect = $('player1Emoji'), player2EmojiSelect = $('player2Emoji'), newGameBtn = $('newGameBtn'), restartBtn = $('restartBtn'), player1WinsElement = $('player1Wins'), player2WinsElement = $('player2Wins'), drawsElement = $('draws'), colorOptions = $$('.color-option'), p1Label = $('p1Label'), p2Label = $('p2Label'), howToPlayBtn = $('howToPlayBtn'), howToPlayModal = $('howToPlayModal');
+    // NOTE: Removed caching for ad and premium elements
+    const closeModalBtns = $$('.close-modal'), shareBtn = $('shareBtn'), darkModeBtn = $('darkModeBtn'), soundToggleBtn = $('soundToggleBtn'), clickSound = $('clickSound'), winSound = $('winSound'), drawSound = $('drawSound'), allSounds = [clickSound, winSound, drawSound];
+
+    /* -------------------------------------------------- */
+    /*                3. Initialization                 */
+    /* -------------------------------------------------- */
+    document.addEventListener('DOMContentLoaded', initializeGame);
 
     function initializeGame() {
-      // Grid size change event
-      gridSizeSelect.addEventListener('change', changeGridSize);
-      
-      // Difficulty change event
-      difficultySelect.addEventListener('change', e => difficulty = difficultySelect.value);
-      
-      // Game mode change event
-      gameModeSelect.addEventListener('change', changeGameMode);
-      
-      // Button events
-      newGameBtn.addEventListener('click', resetGame);
-      restartBtn.addEventListener('click', resetBoard);
-      
-      // Emoji selection events
-      player1EmojiSelect.addEventListener('change', () => { 
-        updateEmojiLabels(); 
-        resetBoard(); 
-      });
-      player2EmojiSelect.addEventListener('change', () => { 
-        updateEmojiLabels(); 
-        resetBoard(); 
-      });
-      
-      // Modal events
-      howToPlayBtn.addEventListener('click', () => {
-        howToPlayModal.classList.add('active');
-      });
-      
-      closeModalBtn.addEventListener('click', () => {
-        howToPlayModal.classList.remove('active');
-      });
-      
-      howToPlayModal.addEventListener('click', (e) => {
-        if (e.target === howToPlayModal) {
-          howToPlayModal.classList.remove('active');
-        }
-      });
-      
-      // Dark mode toggle
-      darkModeBtn.addEventListener('click', toggleDarkMode);
-      
-      // Share button
-      shareBtn.addEventListener('click', shareGame);
-      
-      // Theme color selection
-      colorOptions.forEach((option) => {
-        option.addEventListener('click', () => {
-          colorOptions.forEach(o => o.classList.remove('selected'));
-          option.classList.add('selected');
-          document.documentElement.style.setProperty('--main-color', getComputedStyle(option).backgroundColor);
-          resetBoard();
-        });
-      });
-      
-      updateEmojiLabels();
-      resetGame();
+        applyThemeColorBasedOnSelection();
+        loadPreferences();
+        // NOTE: Removed checkPremiumFeatures() call
+        setupEventListeners();
+        updateEmojiLabels();
+        resetGame(); // Calls resetBoard which now builds the board immediately
+        // NOTE: Removed updatePremiumUI() call
+        // NOTE: Removed showRelevantPremiumAds() call
+        console.log("Ad-Free Game Ready!");
     }
+    function applyThemeColorBasedOnSelection() { const s = document.querySelector('.color-option.selected') || document.querySelector('.color-option'); if(s){ applyThemeColor(s.getAttribute('data-color'), s.getAttribute('data-rgb')); s.classList.add('selected'); }}
+    function loadPreferences() { isMuted = localStorage.getItem('ticTacToeMuted') === 'true'; updateSoundButtonIcon(); }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      isDarkMode = document.body.classList.contains('dark-mode');
-      
-      // Change the icon
-      const darkModeIcon = darkModeBtn.querySelector('i');
-      if (isDarkMode) {
-        darkModeIcon.className = 'ri-sun-line';
-      } else {
-        darkModeIcon.className = 'ri-moon-line';
-      }
+    /* -------------------------------------------------- */
+    /*          4. Event Listeners Setup & Handlers       */
+    /* -------------------------------------------------- */
+    function setupEventListeners() {
+        gridSizeSelect.addEventListener('change', handleGridSizeChange);
+        difficultySelect.addEventListener('change', handleDifficultyChange);
+        gameModeSelect.addEventListener('change', handleGameModeChange);
+        player1EmojiSelect.addEventListener('change', handleEmojiChange);
+        player2EmojiSelect.addEventListener('change', handleEmojiChange);
+        colorOptions.forEach(o => o.addEventListener('click', () => handleThemeChange(o)));
+        newGameBtn.addEventListener('click', resetGame);
+        restartBtn.addEventListener('click', resetBoard); // Restart now directly resets board
+        howToPlayBtn.addEventListener('click', () => toggleModal(howToPlayModal, true));
+        darkModeBtn.addEventListener('click', toggleDarkMode);
+        shareBtn.addEventListener('click', shareGame);
+        soundToggleBtn.addEventListener('click', toggleSound);
+        // NOTE: Removed premium/ad button listeners
+        closeModalBtns.forEach(b => b.addEventListener('click', closeAllModals));
+        $$('.modal').forEach(m => m.addEventListener('click', (e) => { if (e.target === m) closeAllModals(); }));
+        boardElement.addEventListener('mousedown', unlockAudioContext, { once: true });
+        boardElement.addEventListener('touchstart', unlockAudioContext, { once: true });
+        boardElement.addEventListener('click', handleCellClick);
+        // NOTE: Removed premium check interval
     }
+    // --- Event Handlers ---
+    // Simplified handlers (no premium checks needed)
+    function handleGridSizeChange(e) { gridSize = parseInt(e.target.value); winningLength = gridSize; resetBoard(); }
+    function handleDifficultyChange(e) { difficulty = e.target.value; if (gameMode === 'PvC') resetBoard(); }
+    function handleGameModeChange() { gameMode = gameModeSelect.value; resetBoard(); }
+    function handleEmojiChange() { updateEmojiLabels(); resetBoard(); }
+    // NOTE: handleRestartClick removed as restartBtn now directly calls resetBoard
+    function handleCellClick(e) { unlockAudioContext(); const c = e.target.closest('.cell'); if (c && gameActive) { const r = parseInt(c.getAttribute('data-row')), col = parseInt(c.getAttribute('data-col')); if (!isNaN(r) && !isNaN(col) && gameBoard[r][col] === 0) makeMove(r, col); } }
+    function handleThemeChange(opt) { colorOptions.forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); applyThemeColor(opt.getAttribute('data-color'), opt.getAttribute('data-rgb')); }
 
-    function shareGame() {
-      if (navigator.share) {
-        navigator.share({
-          title: 'Tic Tac Toe Deluxe',
-          text: 'Check out this awesome Tic Tac Toe Deluxe game!',
-          url: window.location.href
-        })
-        .catch(error => console.log('Error sharing:', error));
-      } else {
-        alert('Sharing is not supported on this browser.');
-      }
-    }
+    /* -------------------------------------------------- */
+    /*          5. Core Game Logic (Reset, Move, Win/Draw) */
+    /* -------------------------------------------------- */
+    function resetGame() { console.log("New Game"); currentPlayer = (lastWinner > 0 && stats.player1Wins + stats.player2Wins + stats.draws > 0) ? lastWinner : 1; stats = { player1Wins: 0, player2Wins: 0, draws: 0 }; updateStatsDisplay(); resetBoard(); }
+    function resetBoard() { console.log(`Reset Board ${gridSize}x${gridSize}`); gameActive = true; boardElement.innerHTML = ''; boardElement.className = `board board-${gridSize}`; gameBoard = Array(gridSize).fill(null).map(() => Array(gridSize).fill(0)); gameBoardEmojis = Array(gridSize).fill(null).map(() => Array(gridSize).fill('')); const frag = document.createDocumentFragment(); for (let r = 0; r < gridSize; r++) { for (let c = 0; c < gridSize; c++) { const l = document.createElement('div'); l.className = 'cell'; l.setAttribute('data-row', r); l.setAttribute('data-col', c); frag.appendChild(l); } } boardElement.appendChild(frag); currentPlayer = lastWinner > 0 ? lastWinner : 1; if (currentPlayer === 2 && gameMode === 'PvC' && gameActive) setTimeout(makeComputerMove, 300); } // Slightly faster AI start
+    function makeMove(r, c) { if (gameBoard[r][c] !== 0 || !gameActive) return; playSound(clickSound); const e = currentPlayer === 1 ? player1EmojiSelect.value : player2EmojiSelect.value; gameBoard[r][c] = currentPlayer; gameBoardEmojis[r][c] = e; updateCellDisplay(r, c, e); const wL = checkWin(r, c); if (wL) { console.log(`P${currentPlayer} Wins`); gameActive = false; lastWinner = currentPlayer; highlightWinningCells(wL); updateScore(currentPlayer); playSound(winSound); showWinnerPopup(currentPlayer === 1 ? "P1" : "P2", e); return; } if (checkDraw()) { console.log("Draw"); gameActive = false; lastWinner = 0; updateScore(0); playSound(drawSound); showDrawPopup(); return; } currentPlayer = currentPlayer === 1 ? 2 : 1; if (currentPlayer === 2 && gameMode === 'PvC' && gameActive) setTimeout(makeComputerMove, 500); }
+    function checkWin(r,c){const p=gameBoard[r][c],e=gameBoardEmojis[r][c];if(p===0)return null;const D=[{dr:0,dc:1},{dr:1,dc:0},{dr:1,dc:1},{dr:1,dc:-1}];for(const{dr,dc}of D){let l=[{row:r,col:c}];for(let i=1;i<winningLength;i++){const nr=r+dr*i,nc=c+dc*i;if(isValidCell(nr,nc)&&gameBoard[nr][nc]===p&&gameBoardEmojis[nr][nc]===e)l.push({row:nr,col:nc});else break;}for(let i=1;i<winningLength;i++){const nr=r-dr*i,nc=c-dc*i;if(isValidCell(nr,nc)&&gameBoard[nr][nc]===p&&gameBoardEmojis[nr][nc]===e)l.push({row:nr,col:nc});else break;}if(l.length>=winningLength){const s=findExactWinningSequence(l,p,e,dr,dc);if(s)return s;}}return null;}
+    function isValidCell(r,c){return r>=0&&r<gridSize&&c>=0&&c<gridSize;}
+    function findExactWinningSequence(l,p,e,dr,dc){if(l.length<winningLength)return null;if(dr===1&&dc===-1)l.sort((a,b)=>b.row-a.row||a.col-b.col);else l.sort((a,b)=>a.row-b.row||a.col-b.col);for(let i=0;i<=l.length-winningLength;i++){const s=l.slice(i,i+winningLength);let cons=true;for(let j=0;j<winningLength-1;j++){if(Math.abs(s[j].row-s[j+1].row)!==Math.abs(dr)||Math.abs(s[j].col-s[j+1].col)!==Math.abs(dc)){cons=false;break;}}if(cons&&s.every(cell=>gameBoard[cell.row][cell.col]===p&&gameBoardEmojis[cell.row][cell.col]===e))return s;}return null;}
+    function checkDraw(){return gameBoard.flat().every(cell=>cell!==0);}
 
-    function changeGridSize() {
-      gridSize = parseInt(gridSizeSelect.value);
-      // Set winning length based on grid size
-      winningLength = gridSize;
-      resetGame();
-    }
+    /* -------------------------------------------------- */
+    /*             6. AI Logic (Strategies)             */
+    /* -------------------------------------------------- */
+    // AI logic remains the same, but 'hard' is always available
+    function makeComputerMove(){if(!gameActive)return;console.log(`AI(${difficulty}) thinking...`);let m;if(difficulty==='hard')m=findBestMoveMinimaxStyle();else if(difficulty==='medium')m=findBetterStrategicMove();else m=findBasicOffensiveDefensiveMove();if(!m)m=findRandomMove();if(m&&isValidCell(m.row,m.col)&&gameBoard[m.row][m.col]===0)makeMove(m.row,m.col);else{const fb=findRandomMove();if(fb)makeMove(fb.row,fb.col);else console.error("AI Error: No move found.");}}
+    function findRandomMove(){const e=[];for(let r=0;r<gridSize;r++)for(let c=0;c<gridSize;c++)if(gameBoard[r][c]===0)e.push({row:r,col:c});return e.length>0?e[Math.floor(Math.random()*e.length)]:null;}
+    function findWinningMoveForPlayer(p){for(let r=0;r<gridSize;r++)for(let c=0;c<gridSize;c++)if(gameBoard[r][c]===0){gameBoard[r][c]=p;gameBoardEmojis[r][c]=p===1?player1EmojiSelect.value:player2EmojiSelect.value;const win=checkWin(r,c);gameBoard[r][c]=0;gameBoardEmojis[r][c]='';if(win)return{row:r,col:c};}return null;}
+    function findBasicOffensiveDefensiveMove(){const w=findWinningMoveForPlayer(2);if(w)return w;const b=findWinningMoveForPlayer(1);if(b)return b;return findRandomMove();}
+    function findBetterStrategicMove(){const w=findWinningMoveForPlayer(2);if(w)return w;const b=findWinningMoveForPlayer(1);if(b)return b;const cn=Math.floor(gridSize/2);if(isValidCell(cn,cn)&&gameBoard[cn][cn]===0)return{row:cn,col:cn};const co=[{r:0,c:0},{r:0,c:gridSize-1},{r:gridSize-1,c:0},{r:gridSize-1,c:gridSize-1}];const ec=co.filter(p=>isValidCell(p.r,p.c)&&gameBoard[p.r][p.c]===0);if(ec.length>0)return ec[Math.floor(Math.random()*ec.length)];return findRandomMove();}
+    function findBestMoveMinimaxStyle(){const w=findWinningMoveForPlayer(2);if(w)return w;const b=findWinningMoveForPlayer(1);if(b)return b;const cn=Math.floor(gridSize/2);if(isValidCell(cn,cn)&&gameBoard[cn][cn]===0)return{row:cn,col:cn};const co=[{r:0,c:0},{r:0,c:gridSize-1},{r:gridSize-1,c:0},{r:gridSize-1,c:gridSize-1}];const ec=co.filter(p=>isValidCell(p.r,p.c)&&gameBoard[p.r][p.c]===0);if(ec.length>0)return ec[Math.floor(Math.random()*ec.length)];return findRandomMove();}
 
-    function changeGameMode() {
-      gameMode = gameModeSelect.value;
-      resetGame();
-    }
+    /* -------------------------------------------------- */
+    /*        7. UI Updates (Board, Labels, Theme)      */
+    /* -------------------------------------------------- */
+    function updateCellDisplay(r,c,e){const l=boardElement.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);if(l){l.innerHTML='';const s=document.createElement('span');s.className='emoji-appear';s.textContent=e;l.appendChild(s);}}
+    function highlightWinningCells(c){if(!c)return;c.forEach(l=>{const e=boardElement.querySelector(`.cell[data-row="${l.row}"][data-col="${l.col}"]`);if(e)e.classList.add('winner');});}
+    function updateEmojiLabels(){p1Label.textContent=`${player1EmojiSelect.value} P1`;p2Label.textContent=`${player2EmojiSelect.value} P2`;}
+    function updateStatsDisplay(){player1WinsElement.textContent=stats.player1Wins;player2WinsElement.textContent=stats.player2Wins;drawsElement.textContent=stats.draws;}
+    function updateScore(w){if(w===1)stats.player1Wins++;else if(w===2)stats.player2Wins++;else if(w===0)stats.draws++;updateStatsDisplay();}
+    function applyThemeColor(c,r){document.documentElement.style.setProperty('--main-color',c);document.documentElement.style.setProperty('--main-color-rgb',r);}
+    function toggleDarkMode(){document.body.classList.toggle('dark-mode');isDarkMode=document.body.classList.contains('dark-mode');darkModeBtn.querySelector('i').className=isDarkMode?'ri-sun-line':'ri-moon-line';darkModeBtn.title=isDarkMode?"Light":"Dark";}
+    function showWinnerPopup(n,e){const p=document.createElement('div');p.className=`popup ${isDarkMode?'dark-mode':''}`;p.innerHTML=`<span class="celebrate">🎉</span><div>${e} ${n} Wins!</div>`;document.body.appendChild(p);createPremiumCelebration();setTimeout(()=>p.remove(),3000);}
+    function showDrawPopup(){const p=document.createElement('div');p.className=`popup ${isDarkMode?'dark-mode':''}`;p.innerHTML=`<span class="celebrate">🤝</span><div>It's a Draw!</div>`;document.body.appendChild(p);setTimeout(()=>p.remove(),1600);}
+    function toggleModal(el,show){if(el)el.classList.toggle('active',show);}
+    function closeAllModals(){$$('.modal.active').forEach(m=>toggleModal(m,false));}
+    function showTemporaryNotification(m){const n=document.createElement('div');n.textContent=m;n.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--main-color);color:white;padding:10px 20px;border-radius:8px;z-index:2000;box-shadow:0 4px 15px rgba(0,0,0,0.2);opacity:0;transition:opacity .5s ease,bottom .5s ease;font-family:var(--font-body);font-size:.9rem;';document.body.appendChild(n);setTimeout(()=>{n.style.opacity='1';n.style.bottom='30px';},10);setTimeout(()=>{n.style.opacity='0';n.style.bottom='20px';},3000);setTimeout(()=>{if(n.parentNode)n.remove();},3500);}
 
-    function resetGame() {
-      currentPlayer = lastWinner > 0 ? lastWinner : 1;
-      stats = { player1Wins: 0, player2Wins: 0, draws: 0 };
-      player1WinsElement.textContent = '0';
-      player2WinsElement.textContent = '0';
-      drawsElement.textContent = '0';
-      resetBoard();
-    }
+    /* -------------------------------------------------- */
+    /*                 8. Sound Control                 */
+    /* -------------------------------------------------- */
+    function unlockAudioContext(){if(!audioContextUnlocked){console.log("Unlocking audio...");let p=allSounds.map(s=>new Promise((res,rej)=>{if(s&&typeof s.play==='function'){s.volume=0;const pp=s.play();if(pp!==undefined)pp.then(()=>{s.pause();s.currentTime=0;s.volume=1;res(s.id);}).catch(e=>{s.volume=1;rej(e);});else{s.volume=1;res(s.id);}}else res(null);}));Promise.allSettled(p).then(r=>{r.forEach(res=>{if(res.status==='fulfilled'&&res.value)console.log(`Unlocked: ${res.value}`);});});audioContextUnlocked=true;}}
+    function toggleSound(){isMuted=!isMuted;localStorage.setItem('ticTacToeMuted',String(isMuted));updateSoundButtonIcon();}
+    function updateSoundButtonIcon(){const i=soundToggleBtn.querySelector('i');if(isMuted){i.className='ri-volume-mute-line';soundToggleBtn.title="Unmute";}else{i.className='ri-volume-up-line';soundToggleBtn.title="Mute";}}
+    function playSound(a){if(isMuted||!a||typeof a.play!=='function')return;if(!audioContextUnlocked){unlockAudioContext();return;}if(a.readyState>=1){a.currentTime=0;const p=a.play();if(p!==undefined)p.catch(e=>{if(e.name!=='NotAllowedError')a.currentTime=0;});}}
 
-    function updateEmojiLabels() {
-      p1Label.textContent = player1EmojiSelect.value + ' Player 1';
-      p2Label.textContent = player2EmojiSelect.value + ' Player 2';
-    }
+    /* -------------------------------------------------- */
+    /*      9. Premium Features & Ads Handling (REMOVED)*/
+    /* -------------------------------------------------- */
+    // All functions related to premium feature checking, unlocking,
+    // ad display frequency, and ad modals have been removed.
 
-    function resetBoard() {
-      boardElement.innerHTML = '';
-      boardElement.className = `board board-${gridSize}`;
-      gameBoard = Array(gridSize).fill(0).map(() => Array(gridSize).fill(0));
-      gameActive = true;
-      
-      for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-          const cell = document.createElement('div');
-          cell.className = 'cell';
-          cell.setAttribute('data-row', row);
-          cell.setAttribute('data-col', col);
-          cell.addEventListener('click', () => makeMove(row, col));
-          boardElement.appendChild(cell);
-        }
-      }
-      
-      if (currentPlayer === 2 && gameMode === 'PvC' && gameActive) {
-        setTimeout(makeComputerMove, 550);
-      }
-    }
+    /* -------------------------------------------------- */
+    /*             10. Utilities & Effects              */
+    /* -------------------------------------------------- */
+    async function shareGame(){const d={title:'Tic Tac Toe Deluxe',text:'Challenge me!',url:window.location.href};try{if(navigator.share)await navigator.share(d);else showTemporaryNotification('Sharing not supported, copy URL!');}catch(e){if(e.name!=='AbortError')showTemporaryNotification('Could not share.');}}
+    function createPremiumCelebration(){const mc=getComputedStyle(document.documentElement).getPropertyValue('--main-color').trim();const sc=[mc,'#FFD700','#FFFFFF','#C0C0C0'];const cc=[mc,'#E63946','#2A9D8F','#457B9D','#8338EC','#FF006E','#FB5607','#FFBE0B','#FFFFFF'];createConfetti(120,cc);createSparkles(80,sc);for(let i=0;i<5;i++){setTimeout(()=>createFirework(sc),i*250);}}
+    function createConfetti(c=100,o){const t=document.body;for(let n=0;n<c;n++){const e=document.createElement("div");e.className="confetti",e.style.cssText=`position:fixed;left:${100*Math.random()}%;width:${4+8*Math.random()}px;height:${e.style.width};background-color:${o[Math.floor(Math.random()*o.length)]};opacity:${.5+.5*Math.random()};animation:confetti-fall ${2.5+1*Math.random()}s linear ${.5*Math.random()}s forwards;z-index:1000;pointer-events:none;`,t.appendChild(e),setTimeout(()=>{e.parentNode&&e.remove()},4e3)}}
+    function createSparkles(c=50,o){const t=document.body;for(let n=0;n<c;n++){const e=document.createElement("div");e.className="sparkle";const l=o[Math.floor(Math.random()*o.length)];e.style.cssText=`position:fixed;left:${100*Math.random()}%;top:${100*Math.random()}%;width:${4+4*Math.random()}px;height:${e.style.width};background-color:${l};box-shadow:0 0 8px 2px ${l};border-radius:50%;animation:sparkle ${.7+.8*Math.random()}s linear ${1.5*Math.random()}s infinite;z-index:1001;pointer-events:none;`,t.appendChild(e),setTimeout(()=>{e.parentNode&&e.remove()},2500)}}
+    function createFirework(c){const o=document.body,t=document.createElement("div");t.className="firework",t.style.cssText=`position:fixed;left:${10+80*Math.random()}%;top:${10+50*Math.random()}%;width:1px;height:1px;z-index:1002;pointer-events:none;`,o.appendChild(t);const n=30+Math.floor(20*Math.random());for(let e=0;e<n;e++){const l=document.createElement("div");l.className="firework-particle";const a=c[Math.floor(Math.random()*c.length)],r=2*Math.random()*Math.PI,d=50+80*Math.random(),s=Math.cos(r)*d,m=Math.sin(r)*d;l.style.cssText=`position:absolute;left:0;top:0;width:5px;height:5px;background-color:${a};box-shadow:0 0 4px 1px ${a};border-radius:50%;opacity:1;transform-origin:center;--tx:${s}px;--ty:${m}px;animation:firework-expand ${.7+.5*Math.random()}s ease-out forwards;`,t.appendChild(l)}setTimeout(()=>{t.parentNode&&t.remove()},1500)}
+    // NOTE: Removed initializeAds() function as it's no longer needed.
 
-    function makeMove(row, col) {
-      if (gameBoard[row][col] !== 0 || !gameActive) return;
-      
-      playSound(clickSound);
-      gameBoard[row][col] = currentPlayer;
-      updateCell(row, col);
-      
-      if (checkWin(row, col)) {
-        gameActive = false;
-        lastWinner = currentPlayer;
-        
-        if (currentPlayer === 1) {
-          stats.player1Wins++;
-          player1WinsElement.textContent = stats.player1Wins;
-        } else {
-          stats.player2Wins++;
-          player2WinsElement.textContent = stats.player2Wins;
-        }
-        
-        showWinnerPopup(currentPlayer === 1 ? "Player 1" : "Player 2");
-        playSound(winSound);
-        return;
-      }
-      
-      if (checkDraw()) {
-        gameActive = false;
-        lastWinner = 0;
-        stats.draws++;
-        drawsElement.textContent = stats.draws;
-        showDrawPopup();
-        playSound(drawSound);
-        return;
-      }
-      
-      currentPlayer = currentPlayer === 1 ? 2 : 1;
-      
-      if (currentPlayer === 2 && gameMode === 'PvC' && gameActive) {
-        setTimeout(makeComputerMove, 420);
-      }
-    }
-
-    function updateCell(row, col) {
-      const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
-      if (cell) {
-        const emoji = document.createElement('span');
-        emoji.className = 'emoji-appear';
-        emoji.textContent = currentPlayer === 1 ? player1EmojiSelect.value : player2EmojiSelect.value;
-        
-        // Clear any previous content
-        cell.innerHTML = '';
-        cell.appendChild(emoji);
-      }
-    }
-
-    function makeComputerMove() {
-      if (!gameActive) return;
-      
-      let move;
-      switch (difficulty) {
-        case 'easy': 
-          // Easy: 80% random, 20% strategic
-          move = Math.random() < 0.8 ? makeRandomMove() : findBestMove();
-          break;
-        case 'medium': 
-          // Medium: 50% random, 50% strategic
-          move = Math.random() < 0.5 ? makeRandomMove() : findBestMove();
-          break;
-        case 'hard': 
-          // Hard: More advanced strategy
-          move = findBestMove(true);
-          break;
-      }
-      
-      if (move) makeMove(move.row, move.col);
-    }
-
-    function makeRandomMove() {
-      const emptyCells = [];
-      
-      for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-          if (gameBoard[row][col] === 0) {
-            emptyCells.push({ row, col });
-          }
-        }
-      }
-      
-      if (emptyCells.length > 0) {
-        return emptyCells[Math.floor(Math.random() * emptyCells.length)];
-      }
-      
-      return null;
-    }
-
-    function findBestMove(useAdvancedStrategy = false) {
-      // Try to win
-      for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-          if (gameBoard[row][col] === 0) {
-            gameBoard[row][col] = 2;
-            if (checkWin(row, col)) { 
-              gameBoard[row][col] = 0; 
-              return { row, col }; 
-            }
-            gameBoard[row][col] = 0;
-          }
-        }
-      }
-      
-      // Try to block
-      for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-          if (gameBoard[row][col] === 0) {
-            gameBoard[row][col] = 1;
-            if (checkWin(row, col)) { 
-              gameBoard[row][col] = 0; 
-              return { row, col }; 
-            }
-            gameBoard[row][col] = 0;
-          }
-        }
-      }
-      
-      // Additional strategies for hard mode
-      if (useAdvancedStrategy) {
-        // Look for creating potential win situations (2 in a row with space)
-        // Look for forks (multiple winning paths)
-        
-        // For hard mode, make smarter moves based on board analysis
-        if (gridSize === 3) {
-          // For 3x3, use standard tic-tac-toe strategies
-          
-          // Take center if available
-          if (gameBoard[1][1] === 0) {
-            return { row: 1, col: 1 };
-          }
-          
-          // Take opposite corner from player
-          if (gameBoard[0][0] === 1 && gameBoard[2][2] === 0) {
-            return { row: 2, col: 2 };
-          }
-          if (gameBoard[2][2] === 1 && gameBoard[0][0] === 0) {
-            return { row: 0, col: 0 };
-          }
-          if (gameBoard[0][2] === 1 && gameBoard[2][0] === 0) {
-            return { row: 2, col: 0 };
-          }
-          if (gameBoard[2][0] === 1 && gameBoard[0][2] === 0) {
-            return { row: 0, col: 2 };
-          }
-        }
-      }
-      
-      // Center
-      const center = Math.floor(gridSize / 2);
-      if (gameBoard[center][center] === 0) {
-        return { row: center, col: center };
-      }
-      
-      // Corners
-      const corners = [
-        { row: 0, col: 0 }, 
-        { row: 0, col: gridSize - 1 },
-        { row: gridSize - 1, col: 0 }, 
-        { row: gridSize - 1, col: gridSize - 1 }
-      ];
-      
-      for (const c of corners) {
-        if (gameBoard[c.row][c.col] === 0) {
-          return c;
-        }
-      }
-      
-      // Random
-      return makeRandomMove();
-    }
-
-    function checkWin(row, col) {
-      const player = gameBoard[row][col];
-      if (player === 0) return false;
-      
-      // Check horizontal
-      for (let r = 0; r < gridSize; r++) {
-        let count = 0;
-        let winStart = -1;
-        
-        for (let c = 0; c < gridSize; c++) {
-          if (gameBoard[r][c] === player) {
-            if (count === 0) winStart = c;
-            count++;
-            if (count === winningLength) {
-              highlightWinningCells(r, winStart, 0, 1, winningLength);
-              return true;
-            }
-          } else {
-            count = 0;
-            winStart = -1;
-          }
-        }
-      }
-      
-      // Check vertical
-      for (let c = 0; c < gridSize; c++) {
-        let count = 0;
-        let winStart = -1;
-        
-        for (let r = 0; r < gridSize; r++) {
-          if (gameBoard[r][c] === player) {
-            if (count === 0) winStart = r;
-            count++;
-            if (count === winningLength) {
-              highlightWinningCells(winStart, c, 1, 0, winningLength);
-              return true;
-            }
-          } else {
-            count = 0;
-            winStart = -1;
-          }
-        }
-      }
-      
-      // Check diagonal (top-left to bottom-right)
-      for (let r = 0; r <= gridSize - winningLength; r++) {
-        for (let c = 0; c <= gridSize - winningLength; c++) {
-          let isWin = true;
-          for (let i = 0; i < winningLength; i++) {
-            if (gameBoard[r + i][c + i] !== player) {
-              isWin = false;
-              break;
-            }
-          }
-          if (isWin) {
-            highlightWinningCells(r, c, 1, 1, winningLength);
-            return true;
-          }
-        }
-      }
-      
-      // Check diagonal (bottom-left to top-right)
-      for (let r = winningLength - 1; r < gridSize; r++) {
-        for (let c = 0; c <= gridSize - winningLength; c++) {
-          let isWin = true;
-          for (let i = 0; i < winningLength; i++) {
-            if (gameBoard[r - i][c + i] !== player) {
-              isWin = false;
-              break;
-            }
-          }
-          if (isWin) {
-            highlightWinningCells(r, c, -1, 1, winningLength);
-            return true;
-          }
-        }
-      }
-      
-      return false;
-    }
-
-    function highlightWinningCells(startRow, startCol, rowDir, colDir, length) {
-      for (let i = 0; i < length; i++) {
-        const row = startRow + i * rowDir;
-        const col = startCol + i * colDir;
-        const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
-        if (cell) cell.classList.add('winner');
-      }
-    }
-
-    function checkDraw() {
-      for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-          if (gameBoard[row][col] === 0) return false;
-        }
-      }
-      return true;
-    }
-
-    function playSound(audio) {
-      audio.currentTime = 0; 
-      audio.play().catch(() => {});
-    }
-
-    function showWinnerPopup(winnerName) {
-      const popup = document.createElement('div');
-      popup.className = 'popup';
-      const emoji = currentPlayer === 1 ? player1EmojiSelect.value : player2EmojiSelect.value;
-      popup.innerHTML = `<span class="celebrate">🎉</span><div>${emoji} ${winnerName} Wins!</div>`;
-      document.body.appendChild(popup);
-      
-      // Create enhanced celebration effects
-      createPremiumCelebration();
-      
-      setTimeout(() => { popup.remove(); }, 3000);
-    }
-
-    function showDrawPopup() {
-      const popup = document.createElement('div');
-      popup.className = 'popup';
-      popup.innerHTML = `<span class="celebrate">🤝</span><div>It's a Draw!</div>`;
-      document.body.appendChild(popup);
-      setTimeout(() => { popup.remove(); }, 1600);
-    }
-
-    function createPremiumCelebration() {
-      // Get theme color
-      const mainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
-      const colors = [
-        mainColor,
-        '#fffbe6', '#ffe066', '#ffd166', '#fff', 
-        'gold', 'yellow', 'white', 'silver'
-      ];
-      
-      // Create multiple layers of confetti
-      createConfetti(150);
-      
-      // Create sparkles
-      createSparkles(100);
-      
-      // Create fireworks
-      for (let i = 0; i < 8; i++) {
-        setTimeout(() => {
-          createFirework();
-        }, i * 300);
-      }
-    }
-
-    function createConfetti(count = 100) {
-      const colors = [
-        getComputedStyle(document.documentElement).getPropertyValue('--main-color'),
-        '#fffbe6', '#ffe066', '#ffd166', '#fff'
-      ];
-      
-      for (let i = 0; i < count; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.width = `${Math.random() * 12 + 5}px`;
-        confetti.style.height = `${Math.random() * 12 + 5}px`;
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animationDuration = `${Math.random() * 1.5 + 2.2}s`;
-        document.body.appendChild(confetti);
-        setTimeout(() => { confetti.remove(); }, 4000);
-      }
-    }
-
-    function createSparkles(count = 50) {
-      const mainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
-      
-      for (let i = 0; i < count; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = `${Math.random() * 100}%`;
-        sparkle.style.top = `${Math.random() * 100}%`;
-        sparkle.style.backgroundColor = mainColor;
-        sparkle.style.animationDuration = `${Math.random() * 1 + 0.8}s`;
-        sparkle.style.animationDelay = `${Math.random() * 2}s`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => { sparkle.remove(); }, 4000);
-      }
-    }
-
-    function createFirework() {
-      const mainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
-      const colors = [mainColor, '#fffbe6', '#ffe066', 'gold', 'white'];
-      
-      // Random position for firework
-      const posX = Math.random() * window.innerWidth;
-      const posY = Math.random() * window.innerHeight * 0.6;
-      
-      const firework = document.createElement('div');
-      firework.className = 'firework';
-      firework.style.left = `${posX}px`;
-      firework.style.top = `${posY}px`;
-      document.body.appendChild(firework);
-      
-      // Create particles
-      const particleCount = 40;
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'firework-particle';
-        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        
-        // Calculate random direction for particle
-        const angle = (Math.PI * 2) * (i / particleCount);
-        const distance = 100 + Math.random() * 50;
-        const tx = Math.cos(angle) * distance;
-        const ty = Math.sin(angle) * distance;
-        
-        particle.style.setProperty('--tx', `${tx}px`);
-        particle.style.setProperty('--ty', `${ty}px`);
-        particle.style.animationDuration = `${0.8 + Math.random() * 0.6}s`;
-        
-        firework.appendChild(particle);
-      }
-      
-      setTimeout(() => { firework.remove(); }, 2000);
-    }
   </script>
 </body>
 </html>
